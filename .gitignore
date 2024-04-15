@@ -19,3 +19,5 @@ Gemfile.lock
 *.DS_Store
 doc/
 .yardoc/
+test.rb
+*.log

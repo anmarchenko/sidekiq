@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "./helper"
+require_relative "helper"
 require "sidekiq/web/csrf_protection"
 
 describe "Csrf" do
@@ -26,14 +26,19 @@ describe "Csrf" do
 
   it "get" do
     ok = [200, {}, ["OK"]]
+
     first = 1
     second = 1
+
     result = call(env) do |envy|
       refute_nil envy[:csrf_token]
       assert_equal 88, envy[:csrf_token].size
+
       first = envy[:csrf_token]
+
       ok
     end
+
     assert_equal ok, result
 
     result = call(env) do |envy|
