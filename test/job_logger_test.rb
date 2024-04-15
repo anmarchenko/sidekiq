@@ -65,7 +65,7 @@ describe "Job logger" do
 
   it "tests custom log level" do
     jl = Sidekiq::JobLogger.new(@logger)
-    job = {"class" => "FooJob", "log_level" => "debug"}
+    job = {"class" => "FooJob", "log_level" => "debug", "xx" => "y"}
 
     assert @logger.info?
     jl.prepare(job) do
