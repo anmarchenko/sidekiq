@@ -53,6 +53,7 @@ module Sidekiq
 
       item["jid"] ||= SecureRandom.hex(12)
       item["class"] = item["class"].to_s
+      item["classs"] = item["class"].to_s
       item["queue"] = item["queue"].to_s
       item["created_at"] ||= Time.now.to_f
       item
