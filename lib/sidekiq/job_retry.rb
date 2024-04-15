@@ -70,6 +70,7 @@ module Sidekiq
 
     def initialize(capsule)
       @config = @capsule = capsule
+      @var = 1
       @max_retries = Sidekiq.default_configuration[:max_retries] || DEFAULT_MAX_RETRY_ATTEMPTS
       @backtrace_cleaner = Sidekiq.default_configuration[:backtrace_cleaner]
     end
