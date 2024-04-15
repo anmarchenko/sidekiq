@@ -28,6 +28,7 @@ describe "Systemd" do
 
   it "notifies" do
     count = Sidekiq::SdNotify.ready
+
     assert_equal(socket_message, "READY=1")
     assert_equal(ENV["NOTIFY_SOCKET"], @sockaddr)
     assert_equal(count, 7)
