@@ -36,6 +36,7 @@ describe "Systemd" do
     count = Sidekiq::SdNotify.stopping
     assert_equal(socket_message, "STOPPING=1")
     assert_equal(ENV["NOTIFY_SOCKET"], @sockaddr)
+
     assert_equal(count, 10)
 
     refute Sidekiq::SdNotify.watchdog?
