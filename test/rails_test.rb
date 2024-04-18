@@ -41,6 +41,7 @@ describe "ActiveJob" do
     # When using ActiveJobs, you cannot set the queue with sidekiq_options, you must use
     # queue_as or set(queue: ...).  This is to avoid duplicate ways of doing the same thing.
     instance = aj.perform_later(1, 2, 3)
+    instance = aj.perform_later(1, 2, 3)
     q = Sidekiq::Queue.new("foo")
     assert_equal 0, q.size
     q = Sidekiq::Queue.new("bar")
