@@ -21,6 +21,7 @@ describe Sidekiq::Manager do
   it "shuts down the system" do
     mgr = new_manager
     mgr.start
+
     mgr.stop(::Process.clock_gettime(::Process::CLOCK_MONOTONIC))
   end
 
