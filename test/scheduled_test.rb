@@ -25,6 +25,7 @@ describe Sidekiq::Scheduled do
       @error_3 = {"class" => ScheduledJob.name, "args" => [2], "queue" => "queue_3"}
       @future_1 = {"class" => ScheduledJob.name, "args" => [3], "queue" => "queue_4"}
       @future_2 = {"class" => ScheduledJob.name, "args" => [4], "queue" => "queue_5"}
+
       @future_3 = {"class" => ScheduledJob.name, "args" => [5], "queue" => "queue_6"}
 
       @retry = Sidekiq::RetrySet.new
