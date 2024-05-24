@@ -27,7 +27,7 @@ class JobGeneratorTest < Rails::Generators::TestCase
     10.times do
       Thread.new do
         c = 0
-        Datadog::Tracing.trace("counter", continue_from: trace.to_digest, span_type: "counter", resource: "counting_up_to_1m") do
+        Datadog::Tracing.trace("counter", continue_from: trace.to_digest, type: "counter", resource: "counting_up_to_1m") do
           while c < 1_000_000
             c += 1
             result += 1
@@ -37,7 +37,7 @@ class JobGeneratorTest < Rails::Generators::TestCase
     end
 
     while result < 10_000_000
-      Datadog::CI.trace("waiter", "waiting for result") do
+      Datadog::CI.trace("waiting for result", type: "waiter") do
         sleep 0.1
       end
     end
