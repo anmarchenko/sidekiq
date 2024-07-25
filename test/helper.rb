@@ -19,6 +19,7 @@ end
 
 # Configure default Minitest integration
 Datadog.configure do |c|
+  c.service = "sidekiq"
   c.ci.enabled = true
   c.ci.instrument :minitest
   c.ci.itr_enabled = true
