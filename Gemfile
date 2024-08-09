@@ -22,15 +22,6 @@ group :test do
   gem "simplecov"
 end
 
-
-
-
-
-
-
-
-
-
 group :development, :test do
   gem "standard", require: false
   gem "pry"
