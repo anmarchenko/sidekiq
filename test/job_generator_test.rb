@@ -5,6 +5,8 @@ require_relative "dummy/config/environment"
 require "rails/generators/test_case"
 require "generators/sidekiq/job_generator"
 
+$attempts = 0
+
 class JobGeneratorTest < Rails::Generators::TestCase
   tests Sidekiq::Generators::JobGenerator
   destination File.expand_path("../../tmp", __FILE__)
@@ -15,8 +17,13 @@ class JobGeneratorTest < Rails::Generators::TestCase
     super
   end
 
-  test "addition test" do
-    assert 1 == 1, "OOOPS, 1 is not equal to 2"
+  test "failing test" do
+    $attempts += 1
+    if $attempts < 5
+      assert 1 == 2, "OOOPS, 1 is not equal to 2"
+    else
+      assert 1 == 1, "OOOPS, 1 is not equal to 1"
+    end
   end
 
   # here is the example of test with multiple threads and context propagation
