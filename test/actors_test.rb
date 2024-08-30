@@ -25,7 +25,6 @@ describe "Actors" do
   describe "scheduler" do
     it "flakes" do
       res = rand(3)
-      p "Executing flaky test with result #{res}"
       assert_equal res, 1
     end
 
