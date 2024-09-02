@@ -19,6 +19,7 @@ end
 describe "Actors" do
   before do
     @config = reset!
+
     @cap = @config.default_capsule
   end
 
