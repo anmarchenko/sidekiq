@@ -24,7 +24,7 @@ describe "Actors" do
   end
 
   describe "scheduler" do
-    it "flakes" do
+    it "flakes, this is a new test" do
       res = rand(3)
       assert_equal res, 1
     end
