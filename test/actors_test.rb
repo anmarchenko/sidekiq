@@ -16,6 +16,8 @@ class JoeJob
   end
 end
 
+
+
 describe "Actors" do
   before do
     @config = reset!
