@@ -26,30 +26,6 @@ class JobGeneratorTest < Rails::Generators::TestCase
     end
   end
 
-  # here is the example of test with multiple threads and context propagation
-  test "counter test" do
-    result = 0
-    trace = Datadog::Tracing.active_trace
-
-    10.times do
-      Thread.new do
-        c = 0
-        Datadog::Tracing.trace("counter", continue_from: trace.to_digest, type: "counter", resource: "counting_up_to_1m") do
-          while c < 1_000_000
-            c += 1
-            result += 1
-          end
-        end
-      end
-    end
-
-    while result < 10_000_000
-      Datadog::CI.trace("waiting for result", type: "waiter") do
-        sleep 0.1
-      end
-    end
-  end
-
   test "gracefully handles extra job suffix" do
     run_generator ["foo_job"]
     assert_no_file "app/sidekiq/foo_job_job.rb"
