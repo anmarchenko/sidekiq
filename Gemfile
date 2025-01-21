@@ -37,3 +37,5 @@ group :load_test do
 
   gem "ruby-prof"
 end
+
+gem "cuprite"

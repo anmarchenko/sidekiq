@@ -27,6 +27,26 @@ ENV["BACKTRACE"] = "1"
 ENV["REDIS_URL"] ||= "redis://localhost/15"
 NULL_LOGGER = Logger.new(IO::NULL)
 
+require "capybara/cuprite"
+
+Capybara.javascript_driver = :cuprite
+Capybara.register_driver(:cuprite) do |app|
+  Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
+end
+Capybara.current_driver = :cuprite
+
+require 'capybara/minitest'
+
+class CapybaraTestCase < Minitest::Test
+  include Capybara::DSL
+  include Capybara::Minitest::Assertions
+
+  def teardown
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
+  end
+end
+
 def reset!
   # tidy up any open but unreferenced Redis connections so we don't run out of file handles
   if Sidekiq.default_configuration.instance_variable_defined?(:@redis)
