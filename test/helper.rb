@@ -29,11 +29,12 @@ NULL_LOGGER = Logger.new(IO::NULL)
 
 require "capybara/cuprite"
 
-Capybara.javascript_driver = :cuprite
 Capybara.register_driver(:cuprite) do |app|
   Capybara::Cuprite::Driver.new(app, window_size: [1200, 800])
 end
+Capybara.default_driver = :cuprite
 Capybara.current_driver = :cuprite
+Capybara.javascript_driver = :cuprite
 
 require 'capybara/minitest'
 

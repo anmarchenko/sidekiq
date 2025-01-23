@@ -7,4 +7,9 @@ class CupriteTest < CapybaraTestCase
     visit "https://app.datadoghq.com/"
     assert page.has_content?("Datadog")
   end
+
+  def test_visit_google_home_page
+    visit "https://google.com/"
+    assert page.has_content?("Google")
+  end
 end
