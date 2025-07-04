@@ -17,6 +17,7 @@ gem "activerecord-jdbcsqlite3-adapter", platforms: :jruby
 gem "after_commit_everywhere"
 gem "yard"
 gem "mutex_m"
+gem "base64"
 
 group :test do
   gem "maxitest"
