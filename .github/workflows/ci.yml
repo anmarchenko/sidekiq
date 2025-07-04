@@ -43,3 +43,5 @@ jobs:
           site: datadoghq.eu
       - name: Run tests
         run: bundle exec rake
+        env:
+          DD_TEST_SESSION_NAME: sidekiq-${{ matrix.ruby }}-${{ matrix.redis }}
