@@ -44,4 +44,4 @@ jobs:
       - name: Run tests
         run: bundle exec rake
         env:
-          DD_TEST_SESSION_NAME: sidekiq-${{ matrix.ruby }}-${{ matrix.redis }}
+          DD_TEST_SESSION_NAME: sidekiq-ruby-${{ matrix.ruby }}-redis-${{ matrix.redis }}
