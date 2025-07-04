@@ -16,8 +16,10 @@ gem "sqlite3", platforms: :ruby
 gem "activerecord-jdbcsqlite3-adapter", platforms: :jruby
 gem "after_commit_everywhere"
 gem "yard"
+
 gem "mutex_m"
 gem "base64"
+gem "bigdecimal"
 
 group :test do
   gem "maxitest"
