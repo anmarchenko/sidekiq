@@ -17,13 +17,6 @@ if ENV["COVERAGE"]
   end
 end
 
-# Configure default Minitest integration
-Datadog.configure do |c|
-  c.ci.enabled = true
-  c.ci.instrument :minitest
-  c.ci.itr_enabled = true
-end
-
 $TESTING = true
 # disable minitest/parallel threads
 ENV["MT_CPU"] = "0"
