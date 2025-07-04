@@ -35,5 +35,11 @@ jobs:
         uses: supercharge/redis-github-action@1.5.0
         with:
           redis-version: ${{ matrix.redis }}
+      - name: Configure Datadog Test Optimization
+        uses: datadog/test-visibility-github-action@v2
+        with:
+          languages: ruby
+          api_key: ${{ secrets.DD_API_KEY }}
+          site: datadoghq.eu
       - name: Run tests
         run: bundle exec rake
