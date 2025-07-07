@@ -1,4 +1,12 @@
 PATH
+  remote: ../../p/datadog-ci-rb
+  specs:
+    datadog-ci (1.20.2)
+      datadog (~> 2.4)
+      drb
+      msgpack
+
+PATH
   remote: .
   specs:
     sidekiq (7.1.2)
@@ -57,12 +65,22 @@ GEM
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
+    datadog (2.18.0)
+      datadog-ruby_core_source (~> 3.4, >= 3.4.1)
+      libdatadog (~> 18.1.0.1.0)
+      libddwaf (~> 1.24.1.0.0)
+      logger
+      msgpack
+    datadog-ruby_core_source (3.4.1)
     date (3.3.4)
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     docile (1.4.0)
+    drb (2.2.3)
     erubi (1.12.0)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -73,7 +91,14 @@ GEM
       reline (>= 0.3.8)
     json (2.6.3)
     language_server-protocol (3.17.0.3)
+    libdatadog (18.1.0.1.0)
+    libdatadog (18.1.0.1.0-x86_64-linux)
+    libddwaf (1.24.1.0.0-arm64-darwin)
+      ffi (~> 1.0)
+    libddwaf (1.24.1.0.0-x86_64-linux)
+      ffi (~> 1.0)
     lint_roller (1.1.0)
+    logger (1.7.0)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -88,6 +113,7 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.9)
     minitest (5.20.0)
+    msgpack (1.8.0)
     mutex_m (0.3.0)
     net-imap (0.4.6)
       date
@@ -204,6 +230,7 @@ DEPENDENCIES
   after_commit_everywhere
   base64
   bigdecimal
+  datadog-ci!
   debug
   maxitest
   mutex_m

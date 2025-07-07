@@ -21,6 +21,9 @@ gem "mutex_m"
 gem "base64"
 gem "bigdecimal"
 
+# local testing of test optimization
+gem "datadog-ci", path: "../../p/datadog-ci-rb"
+
 group :test do
   gem "maxitest"
   gem "simplecov"
