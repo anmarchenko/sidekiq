@@ -21,6 +21,7 @@ class InterestingJob
   end
 end
 
+
 class TestActiveJob < ActiveJob::Base
   def perform(arg)
   end
