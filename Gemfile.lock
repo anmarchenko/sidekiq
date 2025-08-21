@@ -1,7 +1,7 @@
 PATH
   remote: ../../p/datadog-ci-rb
   specs:
-    datadog-ci (1.20.2)
+    datadog-ci (1.22.0)
       datadog (~> 2.4)
       drb
       msgpack
@@ -219,6 +219,7 @@ GEM
 PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -248,4 +249,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.4.18
+   2.6.9
