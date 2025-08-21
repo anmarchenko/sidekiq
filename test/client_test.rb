@@ -115,9 +115,6 @@ describe Sidekiq::Client do
       end
     end
 
-    it "is totally new" do
-    end
-
     it "can push" do
       jid = @client.push("class" => "Blah", "args" => [1, 2, 3])
       assert_equal 24, jid.size
