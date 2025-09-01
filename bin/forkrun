@@ -12,7 +12,7 @@ test_session = Datadog::CI.start_test_session(
     Datadog::CI::Ext::Test::TAG_FRAMEWORK_VERSION => "1.0.0"
   }
 )
-
+test_module = Datadog::CI.start_test_module(Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK)
 
 # Get test files from the test directory
 test_files = [
@@ -43,10 +43,24 @@ test_files.each do |test_file|
   pids << pid
 end
 
+failed = false
 pids.each do |pid|
-  Process.wait(pid)
+  status = Process.wait2(pid)[1]
+
+  if status.exitstatus != 0
+    failed = true
+  end
 end
 
 puts "All test files completed!"
 
+if failed
+  test_module.failed!
+  test_session.failed!
+else
+  test_module.passed!
+  test_session.passed!
+end
+
+test_module.finish
 test_session.finish
