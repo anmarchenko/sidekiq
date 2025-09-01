@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "minitest"
+require_relative "../test/helper"
+
+# Get test files from the test directory
+test_files = [
+  "test/api_test.rb",
+  "test/client_test.rb",
+  "test/fetch_test.rb",
+  "test/manager_test.rb",
+  "test/processor_test.rb"
+]
+
+# Iterate over each test file and run Minitest
+test_files.each do |test_file|
+  puts "Running tests in #{test_file}..."
+
+  # Fork a process for each test file
+  pid = fork do
+    # Load the test file
+    require_relative "../#{test_file}"
+
+    # Run Minitest for this file
+    Minitest.run([])
+  end
+
+  # Wait for the child process to complete
+  Process.wait(pid)
+
+  puts "Completed tests in #{test_file}"
+  puts "-" * 50
+end
+
+puts "All test files completed!"
