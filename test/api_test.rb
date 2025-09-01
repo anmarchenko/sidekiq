@@ -50,6 +50,10 @@ describe "API" do
       assert_equal 0, s.workers_size
     end
 
+    it "fails" do
+      assert_equal 1, 0
+    end
+
     describe "processed" do
       it "returns number of processed jobs" do
         @cfg.redis { |conn| conn.set("stat:processed", 5) }
