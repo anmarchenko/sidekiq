@@ -6,6 +6,7 @@ require_relative "../test/helper"
 
 require "datadog/ci"
 
+# this is the monkey patch needed to prevent minitest instrumentation from starting and stopping test session for every test file
 module Datadog
   module CI
     module Contrib
@@ -38,6 +39,7 @@ module Datadog
   end
 end
 
+# normal Datadog configuration
 Datadog.configure do |c|
   c.ci.enabled = true
   c.ci.agentless_mode_enabled = true
@@ -45,6 +47,7 @@ Datadog.configure do |c|
   c.ci.instrument :minitest
 end
 
+# we start test session and test module here using datadog-ci's public API
 test_session = Datadog::CI.start_test_session(
   tags: {
     Datadog::CI::Ext::Test::TAG_FRAMEWORK => Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK,
@@ -53,7 +56,6 @@ test_session = Datadog::CI.start_test_session(
 )
 test_module = Datadog::CI.start_test_module(Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK)
 
-# Get test files from the test directory
 test_files = [
   "test/api_test.rb",
   "test/client_test.rb",
@@ -63,21 +65,18 @@ test_files = [
 ]
 pids = []
 
-# Iterate over each test file and run Minitest
 test_files.each do |test_file|
   puts "Running tests in #{test_file}..."
 
-  # Fork a process for each test file
   pid = fork do
-    # Load the test file
     require_relative "../#{test_file}"
 
-    # Run Minitest for this file
     res = Minitest.run([])
 
     puts "Completed tests in #{test_file}"
     puts "-" * 50
 
+    # ATTENTION: this is needed to mark test session as failed
     exit(1) if !res
   end
 
@@ -88,6 +87,7 @@ failed = false
 pids.each do |pid|
   status = Process.wait2(pid)[1]
 
+  # ATTENTION: this is needed to mark test session as failed
   if status.exitstatus != 0
     failed = true
   end
@@ -95,6 +95,7 @@ end
 
 puts "All test files completed!"
 
+# here we mark test session and test module as passed or failed and finish them
 if failed
   p "test session failed!!"
   test_module.failed!
