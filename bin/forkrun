@@ -6,10 +6,49 @@ require_relative "../test/helper"
 
 require "datadog/ci"
 
+module Datadog
+  module CI
+    module Contrib
+      module Minitest
+        module Runner
+          module ClassMethods
+            def init_plugins(*args)
+              super
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+module Datadog
+  module CI
+    module Contrib
+      module Minitest
+        module Reporter
+          module InstanceMethods
+            def report(*args)
+              super
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+Datadog.configure do |c|
+  c.ci.enabled = true
+  c.ci.agentless_mode_enabled = true
+  c.env = 'ci'
+  c.ci.instrument :minitest
+end
+
 test_session = Datadog::CI.start_test_session(
   tags: {
     Datadog::CI::Ext::Test::TAG_FRAMEWORK => Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK,
-    Datadog::CI::Ext::Test::TAG_FRAMEWORK_VERSION => "1.0.0"
+    Datadog::CI::Ext::Test::TAG_FRAMEWORK_VERSION => Minitest::VERSION
   }
 )
 test_module = Datadog::CI.start_test_module(Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK)
@@ -39,9 +78,7 @@ test_files.each do |test_file|
     puts "Completed tests in #{test_file}"
     puts "-" * 50
 
-    if !res
-      exit(1)
-    end
+    exit(1) if !res
   end
 
   pids << pid
