@@ -11,6 +11,7 @@ gem "activerecord", RAILS_VERSION
 gem "railties", RAILS_VERSION
 gem "redis-client"
 gem "debug"
+gem "openssl", ">= 3.3.1"
 
 gem "sqlite3", platforms: :ruby
 gem "activerecord-jdbcsqlite3-adapter", platforms: :jruby

@@ -1,7 +1,7 @@
 PATH
   remote: ../../p/datadog-ci-rb
   specs:
-    datadog-ci (1.22.1)
+    datadog-ci (1.23.1)
       datadog (~> 2.4)
       drb
       msgpack
@@ -128,6 +128,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
+    openssl (3.3.1)
     parallel (1.23.0)
     parallel_tests (4.3.0)
       parallel
@@ -235,6 +236,7 @@ DEPENDENCIES
   debug
   maxitest
   mutex_m
+  openssl (>= 3.3.1)
   parallel_tests
   pry
   railties (~> 7.0.4)
