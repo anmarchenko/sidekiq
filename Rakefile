@@ -13,8 +13,7 @@ require "standard/rake"
 
 Rake::TestTask.new(:test) do |test|
   test.warning = true
-  test.pattern = "test/**/*.rb"
-  test.test_files = ENV["TEST_FILES"] ? ENV["TEST_FILES"].split : nil
+  test.test_files = ENV["TEST_FILES"] ? ENV["TEST_FILES"].split : ["test/**/*.rb"]
 end
 
 task default: [:test]
