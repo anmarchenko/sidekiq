@@ -162,13 +162,14 @@ describe Sidekiq::Metrics do
   end
 
   it "fails 10 times and passes on 11th time 2" do
-    @@flaky_test_counter ||= 0
-    @@flaky_test_counter += 1
+    counter = self.class.instance_variable_get(:@flaky_test_counter) || 0
+    counter += 1
+    self.class.instance_variable_set(:@flaky_test_counter, counter)
 
-    if @@flaky_test_counter <= 10
-      flunk "Test failed on attempt #{@@flaky_test_counter}/11"
+    if counter <= 10
+      flunk "Test failed on attempt #{counter}/11"
     else
-      assert true, "Test passed on attempt #{@@flaky_test_counter}"
+      assert true, "Test passed on attempt #{counter}"
     end
   end
 end
