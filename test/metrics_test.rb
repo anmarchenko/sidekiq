@@ -161,7 +161,7 @@ describe Sidekiq::Metrics do
     end
   end
 
-  it "fails 10 times and passes on 11th time 2" do
+  it "fails 10 times and passes on 11th time 3" do
     counter = self.class.instance_variable_get(:@flaky_test_counter) || 0
     counter += 1
     self.class.instance_variable_set(:@flaky_test_counter, counter)
