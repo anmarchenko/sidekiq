@@ -25,7 +25,8 @@ describe Sidekiq::Metrics do
         raise "boom"
       end
     end
-    smet.flush(time)    smet.track("critical", "App::FooJob") { sleep 0.001 }
+    smet.flush(time)
+    smet.track("critical", "App::FooJob") { sleep 0.001 }
     smet.track("critical", "App::FooJob") { sleep 0.025 }
     smet.track("critical", "App::FooJob") { sleep 0.001 }
     smet.track("critical", "App::SomeJob") { sleep 0.001 }
