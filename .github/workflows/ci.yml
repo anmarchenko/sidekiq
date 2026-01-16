@@ -41,34 +41,6 @@ jobs:
           languages: ruby
           api_key: ${{ secrets.DD_API_KEY }}
           site: datadoghq.eu
-      - name: Check runner diagnostics paths
-        run: |
-          echo "=== Checking common runner diag paths ==="
-
-          # Check paths used by datadog-ci (JS)
-          echo "=== /home/runner/actions-runner/cached/_diag (SaaS path) ==="
-          ls -la /home/runner/actions-runner/cached/_diag 2>&1 || echo "Path does not exist"
-
-          echo "=== /home/runner/actions-runner/_diag (self-hosted path) ==="
-          ls -la /home/runner/actions-runner/_diag 2>&1 || echo "Path does not exist"
-
-          # Find _diag directories
-          echo "=== Finding _diag directories ==="
-          find /home/runner -name "_diag" -type d 2>/dev/null | head -10 || echo "No _diag dirs found"
-
-          # If found, show contents
-          for dir in $(find /home/runner -name "_diag" -type d 2>/dev/null); do
-            echo "=== Contents of $dir ==="
-            ls -la "$dir" 2>&1 || true
-            # Show Worker log content if exists
-            for wlog in "$dir"/Worker_*.log; do
-              if [ -f "$wlog" ]; then
-                echo "=== Contents of $wlog (first 50 lines) ==="
-                head -50 "$wlog"
-              fi
-            done
-          done
-
       - name: Run tests
         run: bundle exec rake
         env:
