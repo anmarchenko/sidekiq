@@ -45,10 +45,11 @@ jobs:
         run: |
           DIAG_PATH="/home/runner/actions-runner/cached/_diag"
           if [ -d "$DIAG_PATH" ]; then
-            echo "=== Looking for check_run_id in Worker logs ==="
-            grep -r "check_run_id" "$DIAG_PATH" || echo "check_run_id not found in any file"
-            echo "=== Full Worker log content ==="
-            cat "$DIAG_PATH"/Worker_*.log | head -200
+            echo "=== Lines containing check_run_id in Worker logs ==="
+            grep "check_run_id" "$DIAG_PATH"/Worker_*.log | head -20
+            echo ""
+            echo "=== Looking for job.d structure ==="
+            grep '"job"' "$DIAG_PATH"/Worker_*.log | head -10
           else
             echo "Diag path not found: $DIAG_PATH"
           fi
