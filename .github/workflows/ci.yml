@@ -41,6 +41,33 @@ jobs:
           languages: ruby
           api_key: ${{ secrets.DD_API_KEY }}
           site: datadoghq.eu
+      - name: Check runner diagnostics paths
+        run: |
+          echo "=== Checking common runner diag paths ==="
+          echo "RUNNER_WORKSPACE: $RUNNER_WORKSPACE"
+          echo "HOME: $HOME"
+
+          # Check hardcoded path
+          echo "=== /home/runner/actions-runner/_diag ==="
+          ls -la /home/runner/actions-runner/_diag 2>&1 || echo "Path does not exist"
+
+          # Check alternative paths
+          echo "=== /home/runner/_diag ==="
+          ls -la /home/runner/_diag 2>&1 || echo "Path does not exist"
+
+          echo "=== ~/actions-runner/_diag ==="
+          ls -la ~/actions-runner/_diag 2>&1 || echo "Path does not exist"
+
+          # Find any Worker_*.log files
+          echo "=== Finding Worker_*.log files ==="
+          find /home/runner -name "Worker_*.log" -type f 2>/dev/null | head -5 || echo "No Worker logs found"
+          find / -name "Worker_*.log" -type f 2>/dev/null | head -5 || echo "No Worker logs found"
+
+          # Check env vars for runner path
+          echo "=== Environment variables ==="
+          env | grep -i runner || true
+          env | grep -i actions || true
+
       - name: Run tests
         run: bundle exec rake
         env:
