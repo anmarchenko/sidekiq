@@ -1,0 +1,110 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "minitest"
+require_relative "../test/helper"
+
+require "datadog/ci"
+
+# this is the monkey patch needed to prevent minitest instrumentation from starting and stopping test session for every test file
+module Datadog
+  module CI
+    module Contrib
+      module Minitest
+        module Runner
+          module ClassMethods
+            def init_plugins(*args)
+              super
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+module Datadog
+  module CI
+    module Contrib
+      module Minitest
+        module Reporter
+          module InstanceMethods
+            def report(*args)
+              super
+            end
+          end
+        end
+      end
+    end
+  end
+end
+
+# normal Datadog configuration
+Datadog.configure do |c|
+  c.ci.enabled = true
+  c.ci.agentless_mode_enabled = true
+  c.env = 'ci'
+  c.ci.instrument :minitest
+end
+
+# we start test session and test module here using datadog-ci's public API
+test_session = Datadog::CI.start_test_session(
+  tags: {
+    Datadog::CI::Ext::Test::TAG_FRAMEWORK => Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK,
+    Datadog::CI::Ext::Test::TAG_FRAMEWORK_VERSION => Minitest::VERSION
+  }
+)
+test_module = Datadog::CI.start_test_module(Datadog::CI::Contrib::Minitest::Ext::FRAMEWORK)
+
+test_files = [
+  "test/api_test.rb",
+  "test/client_test.rb",
+  "test/fetch_test.rb",
+  "test/manager_test.rb",
+  "test/processor_test.rb"
+]
+pids = []
+
+test_files.each do |test_file|
+  puts "Running tests in #{test_file}..."
+
+  pid = fork do
+    require_relative "../#{test_file}"
+
+    res = Minitest.run([])
+
+    puts "Completed tests in #{test_file}"
+    puts "-" * 50
+
+    # ATTENTION: this is needed to mark test session as failed
+    exit(1) if !res
+  end
+
+  pids << pid
+end
+
+failed = false
+pids.each do |pid|
+  status = Process.wait2(pid)[1]
+
+  # ATTENTION: this is needed to mark test session as failed
+  if status.exitstatus != 0
+    failed = true
+  end
+end
+
+puts "All test files completed!"
+
+# here we mark test session and test module as passed or failed and finish them
+if failed
+  p "test session failed!!"
+  test_module.failed!
+  test_session.failed!
+else
+  p "test session passed!"
+  test_module.passed!
+  test_session.passed!
+end
+
+test_module.finish
+test_session.finish

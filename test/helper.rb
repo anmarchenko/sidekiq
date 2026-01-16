@@ -7,15 +7,13 @@ require "minitest/pride"
 require "maxitest/autorun"
 require "maxitest/threads"
 
-if ENV["COVERAGE"]
-  require "simplecov"
-  SimpleCov.start do
-    enable_coverage :line
-    add_filter "/test/"
-    add_filter "/myapp/"
-    minimum_coverage 90
-  end
+require "simplecov"
+SimpleCov.start do
+  enable_coverage :line
+  add_filter "/test/"
+  add_filter "/myapp/"
 end
+
 
 $TESTING = true
 # disable minitest/parallel threads

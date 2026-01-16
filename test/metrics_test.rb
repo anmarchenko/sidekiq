@@ -160,4 +160,16 @@ describe Sidekiq::Metrics do
       assert_equal 1, job_result.hist.dig("22:02", -2)
     end
   end
+
+  it "fails 10 times and passes on 11th time 4" do
+    counter = self.class.instance_variable_get(:@flaky_test_counter) || 0
+    counter += 1
+    self.class.instance_variable_set(:@flaky_test_counter, counter)
+
+    if counter <= 10
+      assert true, "Test passed on attempt #{counter}"
+    else
+      flunk "Test failed on attempt #{counter}/11"
+    end
+  end
 end

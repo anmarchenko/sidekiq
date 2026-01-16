@@ -11,6 +11,7 @@ gem "activerecord", RAILS_VERSION
 gem "railties", RAILS_VERSION
 gem "redis-client"
 gem "debug"
+gem "openssl", ">= 3.3.1"
 
 gem "sqlite3", platforms: :ruby
 gem "activerecord-jdbcsqlite3-adapter", platforms: :jruby
@@ -20,6 +21,11 @@ gem "yard"
 gem "mutex_m"
 gem "base64"
 gem "bigdecimal"
+
+# testing of test optimization
+# gem "datadog-ci", path: "../../p/datadog-ci-rb" # local gem copy
+# gem "datadog-ci" # latest released
+gem "datadog-ci", github: "DataDog/datadog-ci-rb", ref: "main" # specific branch
 
 group :test do
   gem "maxitest"
