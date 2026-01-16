@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/DataDog/datadog-ci-rb.git
-  revision: 278155308e2abbebce529d6526ab4c5d9f6ded61
-  ref: main
+  revision: 99f6dcae15e1f24ec12073cb1e05a9d478e28d9c
+  ref: anmarchenko/fix_github_job_id
   specs:
     datadog-ci (1.26.0)
       datadog (~> 2.4)
