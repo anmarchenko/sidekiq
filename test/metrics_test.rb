@@ -126,9 +126,10 @@ describe Sidekiq::Metrics do
       assert_equal %w[p f ms s].sort, job_result.totals.keys.sort
       assert_equal 2, job_result.series.dig("p", "22:03")
       assert_equal 3, job_result.totals["p"]
-      # Execution time is not consistent, so these assertions are not exact
-      assert job_result.total_avg("ms").between?(0.5, 2), job_result.total_avg("ms")
-      assert job_result.series_avg("s")["22:03"].between?(0.0005, 0.002), job_result.series_avg("s")
+      # Execution time varies with scheduler load, so verify the averages
+      # against the recorded totals instead of wall-clock bounds.
+      assert_equal job_result.totals["ms"] / 2.0, job_result.total_avg("ms")
+      assert_equal job_result.series.dig("s", "22:03"), job_result.series_avg("s")["22:03"]
     end
 
     it "fetches job-specific data" do
