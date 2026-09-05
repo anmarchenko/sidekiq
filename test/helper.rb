@@ -13,7 +13,6 @@ SimpleCov.start do
   add_filter "/myapp/"
 end
 
-
 $TESTING = true
 # disable minitest/parallel threads
 ENV["MT_CPU"] = "0"
@@ -31,7 +30,12 @@ def reset!
     existing_pool&.shutdown(&:close)
   end
 
-  RedisClient.new(url: ENV["REDIS_URL"]).call("flushall")
+  redis = RedisClient.new(url: ENV["REDIS_URL"], timeout: 5)
+  begin
+    redis.call("flushall")
+  ensure
+    redis.close
+  end
   cfg = Sidekiq::Config.new
   cfg[:backtrace_cleaner] = Sidekiq::Config::DEFAULTS[:backtrace_cleaner]
   cfg.logger = NULL_LOGGER
