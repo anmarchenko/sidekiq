@@ -32,7 +32,8 @@ def reset!
 
   redis = RedisClient.new(url: ENV["REDIS_URL"], timeout: 5)
   begin
-    redis.call("flushall")
+    # Fork workers own separate databases; the normal suite also tests sharding.
+    redis.call(ENV.key?("SIDEKIQ_FORKRUN_WORKER") ? "flushdb" : "flushall")
   ensure
     redis.close
   end

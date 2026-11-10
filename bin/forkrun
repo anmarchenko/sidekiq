@@ -2,6 +2,12 @@
 # frozen_string_literal: true
 
 require "minitest"
+require "uri"
+
+# This runner invokes Minitest explicitly. Do not run it again at process exit.
+def Minitest.autorun
+end
+
 require_relative "../test/helper"
 
 require "datadog/ci"
@@ -64,11 +70,20 @@ test_files = [
   "test/processor_test.rb"
 ]
 pids = []
+redis_url = URI(ENV.fetch("REDIS_URL"))
+unless ["redis", "rediss"].include?(redis_url.scheme)
+  abort "forkrun requires a dedicated Redis server with a redis:// or rediss:// URL"
+end
 
-test_files.each do |test_file|
+# Each worker owns one logical database on the dedicated test Redis server.
+test_files.each_with_index do |test_file, worker_index|
   puts "Running tests in #{test_file}..."
 
   pid = fork do
+    worker_redis_url = redis_url.dup
+    worker_redis_url.path = "/#{worker_index}"
+    ENV["REDIS_URL"] = worker_redis_url.to_s
+    ENV["SIDEKIQ_FORKRUN_WORKER"] = worker_index.to_s
     require_relative "../#{test_file}"
 
     res = Minitest.run([])
@@ -108,3 +123,4 @@ end
 
 test_module.finish
 test_session.finish
+exit(failed ? 1 : 0)
