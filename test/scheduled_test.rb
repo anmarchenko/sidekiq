@@ -116,12 +116,11 @@ describe Sidekiq::Scheduled do
 
     it "generates random intervals that target a configured average" do
       with_sidekiq_option(:poll_interval_average, 10) do
-        i = 500
-        intervals = Array.new(i) { @poller.send(:random_poll_interval) }
-
-        assert intervals.all? { |x| x >= 5 }
-        assert intervals.all? { |x| x <= 15 }
-        assert_in_delta 10, intervals.sum.to_f / i, 0.5
+        [[0.0, 5], [0.5, 10], [1.0 - Float::EPSILON, 15]].each do |random, expected|
+          @poller.stub(:rand, random) do
+            assert_in_delta expected, @poller.send(:random_poll_interval), 0.000001
+          end
+        end
       end
     end
 
